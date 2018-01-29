@@ -2,9 +2,9 @@ class Lexico:
     fuente = str
     ind = int
     continua = bool
+    cadena = []
     c = str
-    estado = int
-    simbolo = str
+    estado = str
     tipo = str
 
     def __init__(self,codigo): #Entrada
@@ -40,14 +40,26 @@ class Lexico:
         }
         return switcher.get(tipo,"Error")
 
-    def CadenaToArray(self):
-        cadena = []
-        for letra in self.fuente
-            
+    def Leer(self):
+        self.c = self.cadena[self.ind]
+        self.Evaluar(self.c)
 
-    def Automata(self):
-        while True:
-            if()
+    def Evaluar(self,c):
+        if c.isalpha():
+            estado = self.TipoCadena(0)
+        elif c.isdigit():
+
+
+    def CadenaToArray(self):
+        for letra in self.fuente:
+            self.cadena.append(letra)
+
+
+    def Automata(self,estado):
+        if estado == "IDENTIFICADOR":
+
+
+
 
 f = open("entrada.txt","r")
 cadena = f.read()
