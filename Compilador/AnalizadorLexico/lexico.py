@@ -46,8 +46,20 @@ class Lexico:
 
     def Evaluar(self,c):
         if c.isalpha():
-            estado = self.TipoCadena(0)
+            self.estado = self.TipoCadena(0)
         elif c.isdigit():
+            self.estado = self.TipoCadena(1)
+        elif c == "+" or c == "-":
+            self.estado = self.TipoCadena(5)
+        elif c == "*" or c == "/":
+            self.estado = self.TipoCadena(6)
+        elif c == "<" or c == ">":
+            self.estado = self.TipoCadena(7)
+        elif c == "|":
+            self.estado = self.TipoCadena(8)
+        elif c == "&":
+            self.estado = self.TipoCadena(9)
+        elif c == "!":
 
 
     def CadenaToArray(self):
@@ -55,8 +67,10 @@ class Lexico:
             self.cadena.append(letra)
 
 
-    def Automata(self,estado):
-        if estado == "IDENTIFICADOR":
+    def Automata(self):
+        if self.estado == "IDENTIFICADOR":
+            if self.cadena
+
 
 
 
