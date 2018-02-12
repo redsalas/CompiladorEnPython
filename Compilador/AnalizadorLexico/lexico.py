@@ -271,16 +271,3 @@ class Lexico:
             print(self.token, " \tes ", self.estado)
         self.token = ""
         self.continua = True
-
-#Leer
-f = open("entrada.txt","r")
-cadena = f.read()
-f.close()
-
-#Iniciar Automata
-lex = Lexico(cadena)
-lex.CadenaToArray()
-print(lex.cadena)
-
-while lex.continua:
-    lex.Sig()
