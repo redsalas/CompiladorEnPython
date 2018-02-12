@@ -205,11 +205,9 @@ class Lexico:
                 elif '\n' in self.c:
                     self.estado = self.TipoCadena(-1)
                     sigue = False
-                elif self.c == '"':
-                    self.token = self.token + self.c
-                    self.ind += 1
-                    sigue = False
                 else:
+                    self.token = self.token + self.c
+                    #self.ind += 1
                     sigue = False
             elif self.estado == self.TipoCadena(5):  #OP suma/resta
                 sigue = False
@@ -282,6 +280,7 @@ f.close()
 #Iniciar Automata
 lex = Lexico(cadena)
 lex.CadenaToArray()
+print(lex.cadena)
 
 while lex.continua:
     lex.Sig()
