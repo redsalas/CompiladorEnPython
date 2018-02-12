@@ -1,2 +1,11 @@
-hola123
-342.56$
+int main{
+    string c = "Hola a todos";
+    string d = "Adios";
+    int a = 5 + 6;
+    int b = a;
+    while(6 < 10){
+        if(a == b && c != d){
+            a = 6;
+        }
+    }
+}$
