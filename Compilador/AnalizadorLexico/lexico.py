@@ -6,6 +6,7 @@ class Lexico:
     token = str
     estado = str
     tipo = str
+    continua = bool
 
     def __init__(self,codigo): #Entrada
         self.fuente = codigo
@@ -46,107 +47,117 @@ class Lexico:
             self.cadena.append(letra)
         self.c = self.cadena[self.ind]
 
-    def Inicio(self):
-        if self.c.isalpha():
-            self.estado = self.TipoCadena(0)
-        elif self.c.isdigit():
-            self.estado = self.TipoCadena(1)
-        elif self.c == '"':
-            self.estado = self.TipoCadena(3)
-        elif self.c == '+' or self.c == '-':
-            self.estado = self.TipoCadena(5)
-        elif self.c == '*' or self.c == '/':
-            self.estado = self.TipoCadena(6)
-        elif self.c == '=':
-            self.estado = self.TipoCadena(7)
-        elif self.c == '|':
-            self.estado = self.TipoCadena(8)
-        elif self.c == '&':
-            self.estado = self.TipoCadena(9)
-        elif self.c == ';':
-            self.estado = self.TipoCadena(12)
-        elif self.c == ',':
-            self.estado = self.TipoCadena(13)
-        elif self.c == '(':
-            self.estado = self.TipoCadena(14)
-        elif self.c == '{':
-            self.estado = self.TipoCadena(16)
-        elif "\n" in self.c:
-            self.SaltoEspacio()
-        else:
-            self.estado = self.TipoCadena(-1)
+    def EstadoSig(self):
         self.token = self.c
         self.ind += 1
-
-    def SaltoEspacio(self):
-        self.ind += 1
-        self.c = self.cadena[self.ind]
-        self.Sig()
+        self.Automata()
 
     def Sig(self):
-        if self.c.isalpha():
+        if self.cadena[self.ind] == '$':
+            self.continua = False
+        elif "\n" in self.c or "\t" in self.c:
+            self.ind += 1
+            self.c = self.cadena[self.ind]
+            self.continua = True
+        elif self.c.isalpha():
             self.estado = self.TipoCadena(0)
+            self.continua = False
+            self.EstadoSig()
         elif self.c.isdigit():
             self.estado = self.TipoCadena(1)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '"':
             self.estado = self.TipoCadena(3)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '+' or self.c == '-':
             self.estado = self.TipoCadena(5)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '*' or self.c == '/':
             self.estado = self.TipoCadena(6)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '=':
             self.estado = self.TipoCadena(7)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '|':
             self.estado = self.TipoCadena(8)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '&':
             self.estado = self.TipoCadena(9)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == ';':
             self.estado = self.TipoCadena(12)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == ',':
             self.estado = self.TipoCadena(13)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '(':
             self.estado = self.TipoCadena(14)
+            self.continua = False
+            self.EstadoSig()
         elif self.c == '{':
             self.estado = self.TipoCadena(16)
-        elif "\n" in self.c:
-            self.SaltoEspacio()
+            self.continua = False
+            self.EstadoSig()
         else:
             self.estado = self.TipoCadena(-1)
-        self.token = self.c
-        self.ind += 1
-        while True:
-            self.Automata()
+            self.continua = False
+            print("Programa terminado, estado de Error")
 
     def Automata(self):
-        self.c = self.cadena[self.ind]
-        if self.estado == "IDENTIFICADOR":
-            if self.c.isalpha() or self.c.isdigit():
-                self.token = self.token + self.c
-                self.ind += 1
-            else:
-                print(self.token," es ",self.estado)
-                self.token = ""
-                self.Sig()
-        elif self.estado == "ENTERO":
-            if self.c.isdigit():
-                self.token = self.token + self.c
-                self.ind += 1
-            elif self.c == '.':
-                self.estado = self.TipoCadena(2)
-            else:
-                print(self.token," es ",self.estado)
-                self.token = ""
-                self.Sig()
+        sigue = True
+        while sigue:
+            self.c = self.cadena[self.ind]
+            if self.estado == "IDENTIFICADOR":
+                if self.c.isalpha() or self.c.isdigit():
+                    self.token = self.token + self.c
+                    self.ind += 1
+                elif '\n' in self.c or '\t ' in self.c:
+                    sigue = False
+                else:
+                    sigue = False
+            elif self.estado == "ENTERO":
+                if self.c.isdigit():
+                    self.token = self.token + self.c
+                    self.ind += 1
+                elif self.c == '.':
+                    self.estado = self.TipoCadena(2)
+                    self.token = self.token + self.c
+                    self.ind += 1
+                else:
+                    sigue = False
+                    break
+            elif self.estado == "REAL":
+                if self.c.isdigit():
+                    self.token = self.token + self.c
+                    self.ind += 1
+                elif '\n' in self.c or '\t ' in self.c:
+                    self.ind += 1
+                    sigue = False
+                else:
+                    sigue = False
+        print(self.token, " es ", self.estado)
+        self.token = ""
+        self.continua = True
+
 #Leer
 f = open("entrada.txt","r")
 cadena = f.read()
 f.close()
+
 #Iniciar Automata
 lex = Lexico(cadena)
 lex.CadenaToArray()
-#lex.Inicio()
 
-while lex.ind < len(lex.cadena):
+while lex.continua:
     lex.Sig()
 
 
