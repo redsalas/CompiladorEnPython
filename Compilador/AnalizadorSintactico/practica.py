@@ -1,85 +1,95 @@
 import clasePila
+import lexico
 
-s = [[0 for x in range(4)] for y in range(5)]
-s[0][0] = 'd2'
-s[0][1] = 'null'
-s[0][2] = 'null'
-s[0][3] = '1'
+g1 = [  [2,0,0,1],
+        [0,0,-1,0],
+        [0,3,0,0],
+        [4,0,0,0],
+        [0,0,-2,0]]
 
-s[1][0] = 'null'
-s[1][1] = 'null'
-s[1][2] = 'r0'
-s[1][3] = 'null'
+g2 = [  [2,0,0,1],
+        [0,0,-1,0],
+        [0,3,-3,0],
+        [2,0,0,4],
+        [0,0,-2,0]]
 
-s[2][0] = 'null'
-s[2][1] = 'd3'
-s[2][2] = 'null'
-s[2][3] = 'null'
+entrada = 'a+b$'
+continua = True
 
-s[3][0] = 'd4'
-s[3][1] = 'null'
-s[3][2] = 'null'
-s[3][3] = 'null'
+lex = lexico.Lexico(entrada)
+lex.CadenaToArray()
+pila = clasePila.Pila()
 
-s[4][0] = 'null'
-s[4][1] = 'null'
-s[4][2] = 'r1'
-s[4][3] = 'null'
+pila.apila(pila.regla("$"))
+pila.apila(0)
 
-p = clasePila.Pila()
-p.apila(2)
-p.apila(0)
-entrada = '0102'
-
-#Leer entradas
-for leer in entrada:
-    p.imprime()
-    print("Entrada, analizando: ",leer)
-    estado = s[p.tope()][int(leer)]
-    print("Salida: ",estado)
-    if estado == 'd2':
-        p.apila(int(leer))
-        p.apila(2)
-    elif estado == 'd3':
-        p.apila(int(leer))
-        p.apila(3)
-    elif estado == 'd4':
-        p.apila(int(leer))
-        p.apila(4)
-    elif estado == 'r1':
-        print("E->ind+ind  Haciendo POP")
-        for x in range(0,6):
-            print("Se desapilo: ",p.desapila())
-        estado = s[p.tope()][3]
-        p.apila(3)
-        p.apila(estado)
-    elif estado == 'r0':
-        print("Aceptacion")
-        break
+print('Regla E -> <id> + <id>\n')
+while continua:
+    pila.imprime()
+    lex.Sig()
+    accion = g1[pila.tope()][pila.regla(lex.estado)]
+    print('Entrada: ',lex.estado)
+    print('Accion: ',accion)
+    if accion > 0:
+        pila.apila(pila.regla(lex.estado))
+        pila.apila(accion)
+    elif accion < 0:
+        if accion == -2:
+            for x in range(0,6):  #Longitud de la regla = (3*2) = 6
+                pila.desapila()
+            regla = g1[pila.tope()][3]
+            pila.apila(3)
+            pila.apila(regla)
+        elif accion == -1:
+            print('Acceptacion\n')
+            continua = False
     else:
-        print("pss nada")
+        print('Error\n')
+        continua = False
 
-#Fin de la cadena, leer de nuevo ultimo elemento de entrada
-p.imprime()
-print("Entrada, analizando: ",leer)
-estado = s[p.tope()][int(leer)]
-print("Salida: ",estado)
-if estado == 'd2':
-    p.apila(int(leer))
-    p.apila(2)
-elif estado == 'd3':
-    p.apila(int(leer))
-    p.apila(3)
-elif estado == 'd4':
-    p.apila(int(leer))
-    p.apila(4)
-elif estado == 'r1':
-    for x in range(0,6):
-        p.desapila()
-    estado = s[p.tope()][3]
-    p.apila(3)
-    p.apila(estado)
-elif estado == 'r0':
-    print("Aceptacion")
-else:
-    print("pss nada")
+
+continua = True
+print('Regla E -> <id> + E | <id>\n')
+entrada = 'c$'
+
+pila.vaciar()
+
+lex.setNuevo(entrada)
+lex.CadenaToArray()
+
+idRegla = [1,2]
+lnRegla = [3,1]
+
+pila.apila(pila.regla("$"))
+pila.apila(0)
+
+while continua:
+    pila.imprime()
+    lex.Sig()
+    accion = g2[pila.tope()][pila.regla(lex.estado)]
+    print('Entrada: ',lex.estado)
+    print('Accion: ',accion)
+    if accion > 0:
+        pila.apila(pila.regla(lex.estado))
+        pila.apila(accion)
+    elif accion < 0:
+        if accion == -3:
+            rango = idRegla[1]*lnRegla[1];
+            for x in range(0,rango):
+                pila.desapila()
+            regla = g2[pila.tope()][3]
+            pila.apila(3)
+            pila.apila(regla)
+        elif accion == -2:
+            rango = (idRegla[0]*lnRegla[0])*2;
+            for x in range(0,rango):
+                pila.desapila()
+            regla = g2[pila.tope()][3]
+            pila.apila(3)
+            pila.apila(regla)
+        elif accion == -1:
+            print('Acceptacion')
+            continua = False
+    else:
+        print('Error')
+        continua = False
