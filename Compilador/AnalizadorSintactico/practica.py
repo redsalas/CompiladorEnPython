@@ -74,14 +74,14 @@ while continua:
         pila.apila(accion)
     elif accion < 0:
         if accion == -3:
-            rango = idRegla[1]*lnRegla[1];
+            rango = idRegla[1]*lnRegla[1]
             for x in range(0,rango):
                 pila.desapila()
             regla = g2[pila.tope()][3]
             pila.apila(3)
             pila.apila(regla)
         elif accion == -2:
-            rango = (idRegla[0]*lnRegla[0])*2;
+            rango = (idRegla[0]*lnRegla[0])*2
             for x in range(0,rango):
                 pila.desapila()
             regla = g2[pila.tope()][3]
