@@ -49,10 +49,9 @@ class Lexico:
             20: "while",
             21: "return",
             22: "else",
-            23: "$",
+            23: "$"
         }
         return switcher.get(tipo,"Error")
-
 
     def CadenaToArray(self):
         for letra in self.fuente:
@@ -81,7 +80,7 @@ class Lexico:
         return id
 
     def Sig(self):
-        #print("LEYENDO ",self.c)
+        print("LEYENDO ",self.c)
         if self.cadena[self.ind] == '$':
             self.estado = self.TipoCadena(23)
             self.continua = False
@@ -275,6 +274,7 @@ class Lexico:
             self.estado = 'E'
             print(self.token, " \tes ", self.estado)
         elif id != -1:
+            self.estado = self.TipoCadena(id)
             print(self.token, " \tes ",self.TipoCadena(id))
         else:
             print(self.token, " \tes ", self.estado)
