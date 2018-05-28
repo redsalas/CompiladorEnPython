@@ -24,24 +24,24 @@ class Arbol:
         if a == None:
             return None
         else:
-            self.inorder(a.left)
+            self.inorder(a.izq)
             print(a.dato)
-            self.inorder(a.right)
+            self.inorder(a.der)
 
     def preorder(self, a):
         if a == None:
             return None
         else:
             print(a.dato)
-            self.preorder(a.left)
-            self.preorder(a.right)
+            self.preorder(a.izq)
+            self.preorder(a.der)
 
     def postorder(self, a):
         if a == None:
             return None
         else:
-            self.postorder(a.left)
-            self.postorder(a.right)
+            self.postorder(a.izq)
+            self.postorder(a.der)
             print(a.dato)
 
     def buscar(self, dato, a):
@@ -52,6 +52,6 @@ class Arbol:
                 return a.dato
             else:
                 if dato < a.dato:
-                    return self.buscar(dato, a.left)
+                    return self.buscar(dato, a.izq)
                 else:
-                    return self.buscar(dato, a.right)
+                    return self.buscar(dato, a.der)
