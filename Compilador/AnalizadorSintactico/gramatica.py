@@ -36,9 +36,13 @@ while continua:
         print('Accion: ',accion)
         if accion != 0:
             d = m.Desplazamiento(accion)
-        if d > 0:
-            p.apila(p.regla(lex.estado))
-            p.apila(d)
-        i += 1
-        if i > 3:
+            if d > 0:
+                p.apila(p.regla(lex.estado))
+                p.apila(d)
+            if d < 0:
+                print(m.Regla(accion))
+                for i in range(m.Reduccion(accion)):
+                    p.desapila()
+        else:
+            print('Error')
             continua = False

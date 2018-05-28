@@ -1,27 +1,31 @@
 clasePila = __name__
 class Pila:
     value = int
+    index = -1
 
     def __init__(self):
         self.items = []
 
     def apila(self,x):
         self.items.append(x)
+        self.index += 1
 
     def desapila(self):
         try:
+            self.index -= 1
             return self.items.pop()
         except IndexError:
             raise ValueError("La pila esta vacia")
 
     def tope(self):
-        self.value = int(self.items[-1])
+        self.value = int(self.items[self.index])
         return (self.value)
 
     def isEmpty(self):
         return self.items == []
 
     def vaciar(self):
+        self.index = -1
         while not self.isEmpty():
             self.desapila()
 
