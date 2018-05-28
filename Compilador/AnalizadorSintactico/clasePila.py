@@ -28,7 +28,7 @@ class Pila:
     def imprime(self):
         print("Elementos en la Pila")
         for elemento in self.items:
-            print(elemento,end='')
+            print(elemento,end='->')
         print("")
 
     def regla(self,tipo):

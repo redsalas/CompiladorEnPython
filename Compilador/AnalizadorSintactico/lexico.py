@@ -14,6 +14,7 @@ class Lexico:
     estado = str
     tipo = str
     continua = bool
+    tab = False
 
     def __init__(self,codigo): #Entrada
         self.fuente = codigo
@@ -84,68 +85,84 @@ class Lexico:
         if self.cadena[self.ind] == '$':
             self.estado = self.TipoCadena(23)
             self.continua = False
+            self.tab = False
         elif '\n' in self.c or '\t' in self.c or self.c.isspace():
             self.ind += 1
             self.c = self.cadena[self.ind]
             self.continua = True
+            self.tab = True
         elif self.c.isalpha():
             self.estado = self.TipoCadena(0)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c.isdigit():
             self.estado = self.TipoCadena(1)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '"':
             if self.estado == self.TipoCadena(3):
                 self.ind += 1
                 self.c = self.cadena[self.ind]
                 self.continua = True
+                self.tab = False
             else:
                 self.estado = self.TipoCadena(3)
                 self.continua = False
+                self.tab = False
                 self.EstadoSig()
         elif self.c == '+' or self.c == '-':
             self.estado = self.TipoCadena(5)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '*' or self.c == '/':
             self.estado = self.TipoCadena(6)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '<' or self.c == '>':
             self.estado = self.TipoCadena(7)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '|':
             self.estado = self.TipoCadena(8)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '&':
             if self.estado == self.TipoCadena(9):
                 self.ind += 1
                 self.c = self.cadena[self.ind]
                 self.continua = True
+                self.tab = False
             else:
                 self.estado = self.TipoCadena(9)
                 self.continua = False
+                self.tab = False
                 self.EstadoSig()
         elif self.c == '!':
             self.estado = self.TipoCadena(10)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '=':
             if self.estado == self.TipoCadena(11):
                 self.ind += 1
                 self.c = self.cadena[self.ind]
                 self.continua = True
+                self.tab = False
             else:
                 self.estado = self.TipoCadena(11)
                 self.continua = False
+                self.tab = False
                 self.EstadoSig()
         elif self.c == ';':
             self.estado = self.TipoCadena(12)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == ',':
             self.estado = self.TipoCadena(13)
@@ -154,22 +171,27 @@ class Lexico:
         elif self.c == '(':
             self.estado = self.TipoCadena(14)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == ')':
             self.estado = self.TipoCadena(15)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '{':
             self.estado = self.TipoCadena(16)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         elif self.c == '}':
             self.estado = self.TipoCadena(17)
             self.continua = False
+            self.tab = False
             self.EstadoSig()
         else:
             self.estado = self.TipoCadena(-1)
             self.continua = False
+            self.tab = False
             print("Programa terminado, estado de Error")
 
     def Automata(self):

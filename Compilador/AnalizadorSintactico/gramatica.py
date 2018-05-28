@@ -15,7 +15,7 @@ for i in range(95):
         if gramatica[i][j] == 'nan':
             gramatica[i][j] = 0
 
-entrada = 'int main$'
+entrada = 'int main()$'
 continua = True
 
 lex = lexico.Lexico(entrada)
@@ -30,14 +30,15 @@ i = 0
 while continua:
     p.imprime()
     lex.Sig()
-    accion = gramatica[p.tope()][p.regla(lex.estado)]
-    print('Entrada: ',lex.estado)
-    print('Accion: ',accion)
-    if accion != 0:
-        d = m.Desplazamiento(accion)
-    if d > 0:
-        p.apila(p.regla(lex.estado))
-        p.apila(d)
-    i += 1
-    if i > 3:
-        continua = False
+    if lex.tab == False:
+        accion = gramatica[p.tope()][p.regla(lex.estado)]
+        print('Entrada: ',lex.estado)
+        print('Accion: ',accion)
+        if accion != 0:
+            d = m.Desplazamiento(accion)
+        if d > 0:
+            p.apila(p.regla(lex.estado))
+            p.apila(d)
+        i += 1
+        if i > 3:
+            continua = False
